@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="appauth-kotlin-jslegacy-0.0.1">
+    <output-path>$PROJECT_DIR$/build/libs</output-path>
+    <root id="archive" name="appauth-kotlin-jslegacy-0.0.1.jar">
+      <element id="module-output" name="appauth-kotlin.jsMain" />
+    </root>
+  </artifact>
+</component>
