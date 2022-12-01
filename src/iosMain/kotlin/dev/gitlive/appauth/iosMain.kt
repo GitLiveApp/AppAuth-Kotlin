@@ -1,17 +1,6 @@
 package dev.gitlive.appauth
 
-import cocoapods.AppAuth.OIDAuthorizationRequest
-import cocoapods.AppAuth.OIDAuthorizationResponse
-import cocoapods.AppAuth.OIDAuthorizationService
-import cocoapods.AppAuth.OIDEndSessionRequest
-import cocoapods.AppAuth.OIDEndSessionResponse
-import cocoapods.AppAuth.OIDErrorCodeNetworkError
-import cocoapods.AppAuth.OIDExternalUserAgentIOS
-import cocoapods.AppAuth.OIDExternalUserAgentSessionProtocol
-import cocoapods.AppAuth.OIDGeneralErrorDomain
-import cocoapods.AppAuth.OIDServiceConfiguration
-import cocoapods.AppAuth.OIDTokenRequest
-import cocoapods.AppAuth.OIDTokenResponse
+import cocoapods.AppAuth.*
 import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -70,13 +59,14 @@ actual class AuthorizationRequest private constructor(internal val ios: OIDAutho
     actual constructor(
         config: AuthorizationServiceConfiguration,
         clientId: String,
+        scopes: List<String>,
         responseType: String,
         redirectUri: String
     ) : this(
         OIDAuthorizationRequest(
             configuration = config.ios,
             clientId = clientId,
-            scopes = null,
+            scopes = scopes,
             redirectURL = NSURL.URLWithString(redirectUri)!!,
             responseType = responseType,
             additionalParameters = null
@@ -135,7 +125,9 @@ actual class TokenResponse internal constructor(internal val ios: OIDTokenRespon
 
 actual typealias EndSessionResponse = OIDEndSessionResponse
 
-actual class AuthorizationService constructor(private val presentingViewController: () -> UIViewController) {
+actual typealias AuthorizationServiceContext = UIViewController
+
+actual class AuthorizationService actual constructor(private val context: () -> AuthorizationServiceContext) {
 
     private var session: OIDExternalUserAgentSessionProtocol? = null
 
@@ -145,12 +137,12 @@ actual class AuthorizationService constructor(private val presentingViewControll
     actual suspend fun performAuthorizationRequest(request: AuthorizationRequest): AuthorizationResponse =
         withContext(Dispatchers.Main) {
             suspendCoroutine { cont ->
-                session = OIDAuthorizationService.presentAuthorizationRequest(
+                session = OIDAuthState.authStateByPresentingAuthorizationRequest(
                     request.ios,
-                    OIDExternalUserAgentIOS(presentingViewController())
+                    OIDExternalUserAgentIOS(context())
                 ) { response, error ->
                     session = null
-                    response?.let { cont.resume(AuthorizationResponse(it)) }
+                    response?.let { cont.resume(AuthorizationResponse(it.lastAuthorizationResponse)) }
                         ?: cont.resumeWithException(error!!.toException())
                 }
             }
@@ -161,7 +153,7 @@ actual class AuthorizationService constructor(private val presentingViewControll
             suspendCoroutine { cont ->
                 session = OIDAuthorizationService.presentEndSessionRequest(
                     request.ios,
-                    OIDExternalUserAgentIOS(presentingViewController())
+                    OIDExternalUserAgentIOS(context())
                 ) { response, error ->
                     session = null
                     response?.let { cont.resume(it) }

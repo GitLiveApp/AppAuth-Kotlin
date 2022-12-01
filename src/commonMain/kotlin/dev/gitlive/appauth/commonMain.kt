@@ -2,7 +2,9 @@ package dev.gitlive.appauth
 
 expect class AuthorizationException : Exception
 
-expect class AuthorizationService {
+expect class AuthorizationServiceContext
+
+expect class AuthorizationService(context: () -> AuthorizationServiceContext) {
     suspend fun performAuthorizationRequest(request: AuthorizationRequest): AuthorizationResponse
     suspend fun performEndSessionRequest(request: EndSessionRequest): EndSessionResponse
     suspend fun performTokenRequest(request: TokenRequest): TokenResponse
@@ -27,6 +29,7 @@ expect class AuthorizationServiceConfiguration(
 expect class AuthorizationRequest(
     config: AuthorizationServiceConfiguration,
     clientId: String,
+    scopes: List<String>,
     responseType: String,
     redirectUri: String
 )

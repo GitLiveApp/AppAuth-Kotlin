@@ -1,6 +1,6 @@
 package dev.gitlive.appauth
 
-import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.ActivityResultCaller
@@ -20,8 +20,10 @@ private fun AuthorizationException.wrapIfNecessary() =
     takeUnless { it == AuthorizationException.GeneralErrors.NETWORK_ERROR }
         ?: IOException(message, this)
 
+actual typealias AuthorizationServiceContext = ContextWrapper
+
 actual class AuthorizationService private constructor(private val android: net.openid.appauth.AuthorizationService) {
-    constructor(context: Context) : this(net.openid.appauth.AuthorizationService(context))
+    actual constructor(context: () -> AuthorizationServiceContext) : this(net.openid.appauth.AuthorizationService(context()))
 
     fun bind(activityOrFragment: ActivityResultCaller) {
         launcher = activityOrFragment
@@ -103,6 +105,7 @@ actual class AuthorizationRequest private constructor(internal val android: net.
     actual constructor(
         config: AuthorizationServiceConfiguration,
         clientId: String,
+        scopes: List<String>,
         responseType: String,
         redirectUri: String
     ) : this(
@@ -111,7 +114,9 @@ actual class AuthorizationRequest private constructor(internal val android: net.
             clientId,
             responseType,
             Uri.parse(redirectUri)
-        ).build()
+        )
+        .setScopes(scopes)
+        .build()
     )
 }
 
