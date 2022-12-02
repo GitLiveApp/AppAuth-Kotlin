@@ -36,6 +36,7 @@ class AuthorizationServiceTest {
         val request = AuthorizationRequest(
             config,
             "MyClient",
+            listOf("profile"),
             "code",
             "myapp://oauth2redirect"
         )
@@ -55,6 +56,7 @@ class AuthorizationServiceTest {
         val request = AuthorizationRequest(
             config,
             "MyClient",
+            listOf("profile"),
             "code",
             "myapp://oauth2redirect"
         )

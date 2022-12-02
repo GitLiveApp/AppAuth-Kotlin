@@ -42,6 +42,8 @@ actual class AuthorizationResponse {
         get() = TODO("Not yet implemented")
     actual val idToken: String?
         get() = TODO("Not yet implemented")
+    actual val scope: String?
+        get() = TODO("Not yet implemented")
 }
 
 actual class TokenRequest actual constructor(
@@ -60,7 +62,7 @@ actual class TokenResponse {
         get() = TODO("Not yet implemented")
 }
 
-actual class AuthorizationService actual constructor(context: () -> AuthorizationServiceContext){
+actual class AuthorizationService actual constructor(context: () -> AuthorizationServiceContext) {
     actual suspend fun performAuthorizationRequest(request: AuthorizationRequest): AuthorizationResponse {
         TODO("Not yet implemented")
     }

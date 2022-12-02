@@ -1,5 +1,6 @@
 package dev.gitlive.appauth
 
+import android.app.PendingIntent
 import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
@@ -38,6 +39,23 @@ actual class AuthorizationService private constructor(private val android: net.o
     private var response = CompletableDeferred<Intent?>(value = null)
 
     private lateinit var launcher: ActivityResultLauncher<Intent>
+
+    suspend fun performAuthorizationRequest(
+        request: AuthorizationRequest,
+        completedIntent: PendingIntent,
+        canceledIntent: PendingIntent? = null
+    ): AuthorizationResponse {
+        // if a previous request is still pending then wait for it to finish
+        response.runCatching { await() }
+        response = CompletableDeferred()
+        android.performAuthorizationRequest(
+            request.android,
+            completedIntent,
+            canceledIntent,
+            android.createCustomTabsIntentBuilder().build()
+        )
+        return AuthorizationResponse(net.openid.appauth.AuthorizationResponse.fromIntent(response.await()!!)!!)
+    }
 
     actual suspend fun performAuthorizationRequest(request: AuthorizationRequest): AuthorizationResponse {
         // if a previous request is still pending then wait for it to finish
@@ -122,8 +140,9 @@ actual class AuthorizationRequest private constructor(internal val android: net.
 
 actual class AuthorizationResponse internal constructor(private val android: net.openid.appauth.AuthorizationResponse) {
     actual fun createTokenExchangeRequest() = TokenRequest(android.createTokenExchangeRequest())
-    actual val idToken = android.idToken
-    actual val authorizationCode = android.authorizationCode
+    actual val idToken get() = android.idToken
+    actual val scope get() = android.scope
+    actual val authorizationCode get() = android.authorizationCode
 }
 
 actual class TokenRequest internal constructor(internal val android: net.openid.appauth.TokenRequest) {

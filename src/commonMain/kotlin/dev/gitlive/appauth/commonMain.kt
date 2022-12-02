@@ -37,6 +37,7 @@ expect class AuthorizationRequest(
 expect class AuthorizationResponse {
     val idToken: String?
     val authorizationCode: String?
+    val scope: String?
     fun createTokenExchangeRequest(): TokenRequest
 }
 
