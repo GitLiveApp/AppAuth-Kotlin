@@ -40,23 +40,6 @@ actual class AuthorizationService private constructor(private val android: net.o
 
     private lateinit var launcher: ActivityResultLauncher<Intent>
 
-    suspend fun performAuthorizationRequest(
-        request: AuthorizationRequest,
-        completedIntent: PendingIntent,
-        canceledIntent: PendingIntent? = null
-    ): AuthorizationResponse {
-        // if a previous request is still pending then wait for it to finish
-        response.runCatching { await() }
-        response = CompletableDeferred()
-        android.performAuthorizationRequest(
-            request.android,
-            completedIntent,
-            canceledIntent,
-            android.createCustomTabsIntentBuilder().build()
-        )
-        return AuthorizationResponse(net.openid.appauth.AuthorizationResponse.fromIntent(response.await()!!)!!)
-    }
-
     actual suspend fun performAuthorizationRequest(request: AuthorizationRequest): AuthorizationResponse {
         // if a previous request is still pending then wait for it to finish
         response.runCatching { await() }
