@@ -1,6 +1,6 @@
 package dev.gitlive.appauth
 
-import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.ActivityResultCaller
@@ -20,8 +20,10 @@ private fun AuthorizationException.wrapIfNecessary() =
     takeUnless { it == AuthorizationException.GeneralErrors.NETWORK_ERROR }
         ?: IOException(message, this)
 
+actual typealias AuthorizationServiceContext = ContextWrapper
+
 actual class AuthorizationService private constructor(private val android: net.openid.appauth.AuthorizationService) {
-    constructor(context: Context) : this(net.openid.appauth.AuthorizationService(context))
+    actual constructor(context: () -> AuthorizationServiceContext) : this(net.openid.appauth.AuthorizationService(context()))
 
     fun bind(activityOrFragment: ActivityResultCaller) {
         launcher = activityOrFragment
@@ -103,6 +105,7 @@ actual class AuthorizationRequest private constructor(internal val android: net.
     actual constructor(
         config: AuthorizationServiceConfiguration,
         clientId: String,
+        scopes: List<String>,
         responseType: String,
         redirectUri: String
     ) : this(
@@ -111,14 +114,17 @@ actual class AuthorizationRequest private constructor(internal val android: net.
             clientId,
             responseType,
             Uri.parse(redirectUri)
-        ).build()
+        )
+        .setScopes(scopes)
+        .build()
     )
 }
 
 actual class AuthorizationResponse internal constructor(private val android: net.openid.appauth.AuthorizationResponse) {
     actual fun createTokenExchangeRequest() = TokenRequest(android.createTokenExchangeRequest())
-    actual val idToken = android.idToken
-    actual val authorizationCode = android.authorizationCode
+    actual val idToken get() = android.idToken
+    actual val scope get() = android.scope
+    actual val authorizationCode get() = android.authorizationCode
 }
 
 actual class TokenRequest internal constructor(internal val android: net.openid.appauth.TokenRequest) {

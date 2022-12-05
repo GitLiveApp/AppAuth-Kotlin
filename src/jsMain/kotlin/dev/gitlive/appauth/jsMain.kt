@@ -1,5 +1,6 @@
 package dev.gitlive.appauth
 
+actual class AuthorizationServiceContext
 actual class AuthorizationServiceConfiguration actual constructor(
     authorizationEndpoint: String,
     tokenEndpoint: String,
@@ -27,6 +28,7 @@ actual class AuthorizationException : Exception()
 actual class AuthorizationRequest actual constructor(
     config: AuthorizationServiceConfiguration,
     clientId: String,
+    scopes: List<String>,
     responseType: String,
     redirectUri: String
 )
@@ -39,6 +41,8 @@ actual class AuthorizationResponse {
     actual val authorizationCode: String?
         get() = TODO("Not yet implemented")
     actual val idToken: String?
+        get() = TODO("Not yet implemented")
+    actual val scope: String?
         get() = TODO("Not yet implemented")
 }
 
@@ -58,7 +62,7 @@ actual class TokenResponse {
         get() = TODO("Not yet implemented")
 }
 
-actual class AuthorizationService {
+actual class AuthorizationService actual constructor(context: () -> AuthorizationServiceContext) {
     actual suspend fun performAuthorizationRequest(request: AuthorizationRequest): AuthorizationResponse {
         TODO("Not yet implemented")
     }
