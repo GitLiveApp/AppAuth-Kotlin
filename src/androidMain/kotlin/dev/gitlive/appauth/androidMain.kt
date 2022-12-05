@@ -1,6 +1,5 @@
 package dev.gitlive.appauth
 
-import android.app.PendingIntent
 import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
