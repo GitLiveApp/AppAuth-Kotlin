@@ -11,7 +11,7 @@ import cocoapods.AppAuth.OIDEndSessionRequest
 import cocoapods.AppAuth.OIDTokenResponse
 import cocoapods.AppAuth.OIDEndSessionResponse
 import cocoapods.AppAuth.OIDExternalUserAgentSessionProtocol
-import cocoapods.AppAuth.OIDAuthState
+import cocoapods.AppAuth.OIDExternalUserAgentIOS
 import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -149,12 +149,12 @@ actual class AuthorizationService actual constructor(private val context: () -> 
     actual suspend fun performAuthorizationRequest(request: AuthorizationRequest): AuthorizationResponse =
         withContext(Dispatchers.Main) {
             suspendCoroutine { cont ->
-                session = OIDAuthState.authStateByPresentingAuthorizationRequest(
+                session = OIDAuthorizationService.presentAuthorizationRequest(
                     request.ios,
                     OIDExternalUserAgentIOS(context())
                 ) { response, error ->
                     session = null
-                    response?.let { cont.resume(AuthorizationResponse(it.lastAuthorizationResponse)) }
+                    response?.let { cont.resume(AuthorizationResponse(it)) }
                         ?: cont.resumeWithException(error!!.toException())
                 }
             }
