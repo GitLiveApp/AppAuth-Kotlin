@@ -1,12 +1,12 @@
 package dev.gitlive.appauth.authorization
 
-import cocoapods.AppAuth.OIDServiceConfiguration
 import cocoapods.AppAuth.OIDAuthorizationService
+import cocoapods.AppAuth.OIDServiceConfiguration
 import dev.gitlive.appauth.toException
 import platform.Foundation.NSURL
-import kotlin.coroutines.suspendCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 actual class AuthorizationServiceConfiguration private constructor(val ios: OIDServiceConfiguration) {
 

@@ -2,7 +2,6 @@ package dev.gitlive.appauth.token
 
 import dev.gitlive.appauth.authorization.AuthorizationServiceConfiguration
 
-
 actual class TokenRequest internal constructor(internal val android: net.openid.appauth.TokenRequest) {
     actual constructor(
         config: AuthorizationServiceConfiguration,

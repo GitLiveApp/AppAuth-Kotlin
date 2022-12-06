@@ -1,5 +1,6 @@
 package dev.gitlive.appauth
 
+import dev.gitlive.appauth.authorization.AuthorizationService
 import kotlinx.coroutines.CoroutineScope
 
 actual val context: Any

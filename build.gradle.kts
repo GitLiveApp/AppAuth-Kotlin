@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
+    id("org.jetbrains.kotlinx.kover") version "0.6.1"
     kotlin("multiplatform") version "1.7.20"
     kotlin("native.cocoapods") version "1.7.20"
     id("com.android.library")
@@ -8,6 +9,10 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
     `maven-publish`
     signing
+}
+
+kover {
+    engine.set(kotlinx.kover.api.DefaultIntellijEngine)
 }
 
 val MODULE_PACKAGE_NAME: String by project

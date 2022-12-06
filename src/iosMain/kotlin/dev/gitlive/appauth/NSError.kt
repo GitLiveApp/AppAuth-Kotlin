@@ -1,8 +1,8 @@
 package dev.gitlive.appauth
 
-import dev.gitlive.appauth.authorization.AuthorizationException
-import cocoapods.AppAuth.OIDGeneralErrorDomain
 import cocoapods.AppAuth.OIDErrorCodeNetworkError
+import cocoapods.AppAuth.OIDGeneralErrorDomain
+import dev.gitlive.appauth.authorization.AuthorizationException
 import io.ktor.utils.io.errors.IOException
 import platform.Foundation.NSError
 

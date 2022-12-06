@@ -1,5 +1,8 @@
 package dev.gitlive.appauth
 
+import dev.gitlive.appauth.authorization.AuthorizationRequest
+import dev.gitlive.appauth.authorization.AuthorizationService
+import dev.gitlive.appauth.authorization.AuthorizationServiceConfiguration
 import dev.gitlive.appauth.session.EndSessionRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

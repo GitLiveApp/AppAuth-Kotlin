@@ -1,11 +1,11 @@
 package dev.gitlive.appauth.authorization
 
-import cocoapods.AppAuth.OIDExternalUserAgentSessionProtocol
 import cocoapods.AppAuth.OIDAuthorizationService
 import cocoapods.AppAuth.OIDExternalUserAgentIOS
-import dev.gitlive.appauth.toException
+import cocoapods.AppAuth.OIDExternalUserAgentSessionProtocol
 import dev.gitlive.appauth.session.EndSessionRequest
 import dev.gitlive.appauth.session.EndSessionResponse
+import dev.gitlive.appauth.toException
 import dev.gitlive.appauth.token.TokenRequest
 import dev.gitlive.appauth.token.TokenResponse
 import kotlinx.coroutines.Dispatchers

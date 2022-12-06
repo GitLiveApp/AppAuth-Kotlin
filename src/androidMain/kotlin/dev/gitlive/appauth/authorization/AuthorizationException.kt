@@ -1,7 +1,7 @@
 package dev.gitlive.appauth.authorization
 
-import net.openid.appauth.AuthorizationException
 import io.ktor.utils.io.errors.IOException
+import net.openid.appauth.AuthorizationException
 
 actual typealias AuthorizationException = AuthorizationException
 
