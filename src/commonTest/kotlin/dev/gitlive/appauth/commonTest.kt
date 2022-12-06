@@ -1,5 +1,6 @@
 package dev.gitlive.appauth
 
+import dev.gitlive.appauth.session.EndSessionRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
