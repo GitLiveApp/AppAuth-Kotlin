@@ -25,6 +25,9 @@ repositories {
 
 kover {
     engine.set(kotlinx.kover.api.DefaultIntellijEngine)
+    verify {
+        onCheck.set(true)
+    }
 }
 
 kotlin {
