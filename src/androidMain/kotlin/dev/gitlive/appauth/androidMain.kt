@@ -115,8 +115,8 @@ actual class AuthorizationRequest private constructor(internal val android: net.
             responseType,
             Uri.parse(redirectUri)
         )
-        .setScopes(scopes)
-        .build()
+            .setScopes(scopes)
+            .build()
     )
 }
 

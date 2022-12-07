@@ -6,6 +6,7 @@ plugins {
     id("com.android.library")
     id("io.github.luca992.multiplatform-swiftpackage") version "2.0.5-arm64"
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
+    id("org.jetbrains.kotlinx.kover") version "0.6.1"
     `maven-publish`
     signing
 }
@@ -20,6 +21,10 @@ version = MODULE_VERSION_NUMBER
 repositories {
     google()
     mavenCentral()
+}
+
+kover {
+    engine.set(kotlinx.kover.api.DefaultIntellijEngine)
 }
 
 kotlin {
