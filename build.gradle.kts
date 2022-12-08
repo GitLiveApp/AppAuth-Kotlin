@@ -163,8 +163,8 @@ publishing {
             url = uri(OPEN_SOURCE_REPO)
 
             credentials {
-                username = System.getenv("sonatypeUsernameEnv")
-                password = System.getenv("sonatypePasswordEnv")
+                username = System.getenv("SONATYPEUSERNAME")
+                password = System.getenv("SONATYPEPASSWORD")
             }
         }
     }
