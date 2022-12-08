@@ -1,17 +1,17 @@
 package dev.gitlive.appauth
 
-import cocoapods.AppAuth.OIDGeneralErrorDomain
-import cocoapods.AppAuth.OIDErrorCodeNetworkError
-import cocoapods.AppAuth.OIDServiceConfiguration
-import cocoapods.AppAuth.OIDAuthorizationService
 import cocoapods.AppAuth.OIDAuthorizationRequest
-import cocoapods.AppAuth.OIDTokenRequest
 import cocoapods.AppAuth.OIDAuthorizationResponse
+import cocoapods.AppAuth.OIDAuthorizationService
 import cocoapods.AppAuth.OIDEndSessionRequest
-import cocoapods.AppAuth.OIDTokenResponse
 import cocoapods.AppAuth.OIDEndSessionResponse
-import cocoapods.AppAuth.OIDExternalUserAgentSessionProtocol
+import cocoapods.AppAuth.OIDErrorCodeNetworkError
 import cocoapods.AppAuth.OIDExternalUserAgentIOS
+import cocoapods.AppAuth.OIDExternalUserAgentSessionProtocol
+import cocoapods.AppAuth.OIDGeneralErrorDomain
+import cocoapods.AppAuth.OIDServiceConfiguration
+import cocoapods.AppAuth.OIDTokenRequest
+import cocoapods.AppAuth.OIDTokenResponse
 import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
