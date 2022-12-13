@@ -174,10 +174,13 @@ actual class AuthorizationService actual constructor(private val context: () -> 
             }
         }
 
-    actual suspend fun performTokenRequest(request: TokenRequest): TokenResponse = suspendCoroutine { cont ->
-        OIDAuthorizationService.performTokenRequest(request.ios) { response, error ->
-            response?.let { cont.resume(TokenResponse(it)) }
-                ?: cont.resumeWithException(error!!.toException())
+    actual suspend fun performTokenRequest(request: TokenRequest): TokenResponse =
+        withContext(Dispatchers.Main) {
+            suspendCoroutine { cont ->
+                OIDAuthorizationService.performTokenRequest(request.ios) { response, error ->
+                    response?.let { cont.resume(TokenResponse(it)) }
+                        ?: cont.resumeWithException(error!!.toException())
+                }
+            }
         }
-    }
 }
